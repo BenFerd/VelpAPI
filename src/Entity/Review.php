@@ -2,11 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\ReviewRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\ReviewRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
+ * @ApiResource(
+ *          attributes={
+ *                  "order":{"pubDate":"desc"}
+ * }
+ * )
  */
 class Review
 {

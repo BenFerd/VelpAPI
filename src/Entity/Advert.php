@@ -2,11 +2,17 @@
 
 namespace App\Entity;
 
-use App\Repository\AdvertRepository;
 use Doctrine\ORM\Mapping as ORM;
+use App\Repository\AdvertRepository;
+use ApiPlatform\Core\Annotation\ApiResource;
 
 /**
  * @ORM\Entity(repositoryClass=AdvertRepository::class)
+ * @ApiResource(
+ *          attributes={
+ *                  "order":{"pubDate":"desc"}
+ * }
+ * )
  */
 class Advert
 {
