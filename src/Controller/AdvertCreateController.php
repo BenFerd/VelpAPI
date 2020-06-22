@@ -5,7 +5,7 @@ namespace App\Controller;
 use App\Entity\Advert;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
-class UserCreateController
+class AdvertCreateController
 {
 
     
