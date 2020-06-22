@@ -8,3 +8,4 @@ api_platform:
     collection:
         pagination:
             enabled: false
+    show_webby: false

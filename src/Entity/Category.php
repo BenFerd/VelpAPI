@@ -7,10 +7,15 @@ use App\Repository\CategoryRepository;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=CategoryRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *      normalizationContext={
+ *              "groups"={"categories_read"}
+ * })
  */
 class Category
 {
@@ -23,11 +28,13 @@ class Category
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"categories_read","topics_read","adverts_read"})
      */
     private $name;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"categories_read"})
      */
     private $description;
 

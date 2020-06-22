@@ -5,12 +5,17 @@ namespace App\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\ReviewRepository;
 use ApiPlatform\Core\Annotation\ApiResource;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=ReviewRepository::class)
  * @ApiResource(
  *          attributes={
  *                  "order":{"pubDate":"desc"}
+ * },
+ *      normalizationContext={
+ *              "groups"={"reviews_read"}
  * }
  * )
  */
@@ -25,33 +30,39 @@ class Review
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"reviews_read","users_read"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="integer")
+     * @Groups({"reviews_read","users_read"})
      */
     private $note;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"reviews_read","users_read"})
      */
     private $description;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"reviews_read","users_read"})
      */
     private $pubDate;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="reviews")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"reviews_read"})
      */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="concernReviews")
      * @ORM\JoinColumn(nullable=false)
+     * @Groups({"reviews_read"})
      */
     private $concern;
 

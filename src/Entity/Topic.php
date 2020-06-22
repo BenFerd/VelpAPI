@@ -4,13 +4,21 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\TopicRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass=TopicRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *      normalizationContext={
+ *              "groups"={"topics_read"}
+ * })
+ * @ApiFilter(SearchFilter::class)
  */
 class Topic
 {
@@ -23,26 +31,31 @@ class Topic
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"topics_read","messages_read","catrgories_read"})
      */
     private $title;
 
     /**
      * @ORM\Column(type="string", length=255, nullable=true)
+     * @Groups({"topics_read"})
      */
     private $description;
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="topics")
+     * @Groups({"topics_read"})
      */
     private $author;
 
     /**
      * @ORM\ManyToOne(targetEntity=Category::class, inversedBy="topics")
+     * @Groups({"topics_read"})
      */
     private $category;
 
     /**
      * @ORM\OneToMany(targetEntity=Message::class, mappedBy="topic")
+     * @Groups({"topics_read"})
      */
     private $messages;
 

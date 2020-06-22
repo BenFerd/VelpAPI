@@ -4,14 +4,30 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use App\Repository\UserRepository;
+use ApiPlatform\Core\Annotation\ApiFilter;
 use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
+use ApiPlatform\Core\Annotation\ApiSubresource;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\Security\Core\User\UserInterface;
+use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 /**
  * @ORM\Entity(repositoryClass=UserRepository::class)
- * @ApiResource
+ * @ApiResource(
+ *      normalizationContext={
+ *              "groups"={"users_read"}
+ * },
+ *      collectionOperations={"get","put","delete","post"={
+ *              "controller"=App\Controller\UserCreateController::class}
+ * }
+ * )
+ * @ApiFilter(SearchFilter::class)
+ * @UniqueEntity("email", message="Cette adresse email est déjà utilisée pour un autre utilisateur.")
  */
 class User implements UserInterface
 {
@@ -24,6 +40,9 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Groups({"users_read"})
+     * @Assert\NotBlank(message="L'email doit être renseigné.")
+     * @Assert\Email(message="L'adresse email n'est pas valide.")
      */
     private $email;
 
@@ -35,41 +54,55 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank(message="Mot de passe obligatoire.")
+     * @Assert\Length(min=3, minMessage="Le mot de passe doit faire au moins 3 caractères.")
+     * @Groups({"users_read"})
      */
     private $password;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"users_read","topics_read","reviews_read","messages_read","catrgories_read","adverts_read"})
+     * @Assert\NotBlank(message="Ce champs est obligatoire.")
      */
     private $firstName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"users_read","topics_read","reviews_read","messages_read","catrgories_read","adverts_read"})
+     * @Assert\NotBlank(message="Ce champs est obligatoire.")
      */
     private $lastName;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Groups({"users_read"})
+     * @Assert\NotBlank(message="Ce champs est obligatoire.")
      */
     private $city;
 
     /**
      * @ORM\Column(type="datetime")
+     * @Groups({"users_read"})
      */
     private $registerDate;
 
     /**
      * @ORM\OneToMany(targetEntity=Advert::class, mappedBy="user")
+     * @Groups({"users_read"})
+     * @ApiSubresource
      */
     private $adverts;
 
     /**
      * @ORM\OneToMany(targetEntity=Review::class, mappedBy="author")
+     * 
      */
     private $reviews;
 
     /**
      * @ORM\OneToMany(targetEntity=Review::class, mappedBy="concern")
+     * @Groups({"users_read"})
      */
     private $concernReviews;
 
