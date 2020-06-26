@@ -20,9 +20,7 @@ use ApiPlatform\Core\Bridge\Doctrine\Orm\Filter\SearchFilter;
  *  
  *      normalizationContext={
  *              "groups"={"adverts_read"}
- * },
- *      collectionOperations={"get","put","delete","post"={
- *              "controller"=App\Controller\AdvertCreateController::class}
+ * }
  * )
  * @ApiFilter(SearchFilter::class, properties={"title"})
  */
@@ -32,6 +30,7 @@ class Advert
      * @ORM\Id()
      * @ORM\GeneratedValue()
      * @ORM\Column(type="integer")
+     * @Groups({"adverts_read","users_read"})
      */
     private $id;
 
@@ -73,51 +72,6 @@ class Advert
      */
     private $category;
 
-    /**
-     * @var UploadedFile
-     */
-    private $file;
-
-    /**
-     * @var string
-     */
-    private $fileUrl;
-
-    /**
-     * @return string
-     */
-    public function getFileUrl()
-    {
-        return $this->fileUrl;
-    }
-
-    /**
-     * @param string $fileUrl
-     * @return Advert
-     */
-    public function setFileUrl( $fileUrl): Advert
-    {
-        $this->fileUrl = $fileUrl;
-        return $this;
-    }
-
-    /**
-     * @return UploadedFile
-     */
-    public function getFile()
-    {
-        return $this->file;
-    }
-
-    /**
-     * @param UploadedFile $file
-     * @return Advert
-     */
-    public function setFile($file): Advert
-    {
-        $this->file = $file;
-        return $this;
-    }
 
     public function getId(): ?int
     {

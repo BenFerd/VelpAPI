@@ -34,7 +34,7 @@ class AppFixtures extends Fixture
         for ($c = 0; $c < 10; $c++) {
             $category = new Category();
 
-            $category->setName($faker->name())
+            $category->setName($faker->randomElement(["Aide", "Animaux", "Babysitting", "Bricolage", "Event", "Jardin", "Informatique", "Soins", "Ecole", "Transport"]))
                 ->setDescription($faker->sentence());
 
             $manager->persist($category);

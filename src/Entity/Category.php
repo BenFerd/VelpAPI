@@ -29,6 +29,7 @@ class Category
     /**
      * @ORM\Column(type="string", length=255)
      * @Groups({"categories_read","topics_read","adverts_read"})
+     * @Assert\Choice(choices={"Aide", "Animaux", "Babysitting", "Bricolage", "Event", "Jardin", "Informatique", "Soins", "Ecole", "Transport"})
      */
     private $name;
 
