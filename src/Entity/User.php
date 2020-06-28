@@ -22,7 +22,7 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  *      normalizationContext={
  *              "groups"={"users_read"}
  * },
- *      collectionOperations={"get","put","delete","post"={
+ *      collectionOperations={"get","post"={
  *              "controller"=App\Controller\UserCreateController::class}
  * }
  * )
@@ -97,13 +97,14 @@ class User implements UserInterface
 
     /**
      * @ORM\OneToMany(targetEntity=Review::class, mappedBy="author")
-     * 
+     * @ApiSubresource
      */
     private $reviews;
 
     /**
      * @ORM\OneToMany(targetEntity=Review::class, mappedBy="concern")
      * @Groups({"users_read"})
+     * @ApiSubresource
      */
     private $concernReviews;
 

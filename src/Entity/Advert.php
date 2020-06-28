@@ -62,7 +62,7 @@ class Advert
 
     /**
      * @ORM\ManyToOne(targetEntity=User::class, inversedBy="adverts")
-     * @Groups({"adverts_read","catrgories_read"})
+     * @Groups({"adverts_read","categories_read"})
      */
     private $user;
 
